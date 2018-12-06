@@ -40,6 +40,12 @@ public class DBAdapter {
         public void onCreate(SQLiteDatabase db){
             try{
                 // Create tables
+                db.execSQL("CREATE TABLE IF NOT EXISTS categories (" +
+                        " category_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        " category_name VARCHAR," +
+                        " category_parent_id INT," +
+                        " category_icon VARCHAR," +
+                        " category_note VARCHAR);");
                 db.execSQL("CREATE TABLE IF NOT EXISTS food (" +
                             " food_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                             " food_name VARCHAR," +
@@ -76,6 +82,7 @@ public class DBAdapter {
 
 
             // ! All tables that are going to be dropped need to be listed here
+            db.execSQL("DROP TABLE IF EXISTS categories");
             db.execSQL("DROP TABLE IF EXISTS food");
             onCreate(db);
 
