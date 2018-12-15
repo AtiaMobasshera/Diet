@@ -34,8 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
         if(numberRows < 1){
             // Run setup
+            Toast.makeText(this, "Loading setup...", Toast.LENGTH_LONG).show();
             DBSetupInsert setupInsert = new DBSetupInsert(this);
+            setupInsert.insertAllCategories();
             setupInsert.insertAllFood();
+            Toast.makeText(this, "Setup completed!", Toast.LENGTH_LONG).show();
+
         }
 
 
