@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">StramDiet</string>
+    <string name="app_name">Diet by Stram</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
     <string name="email">Email</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="gender">Gender</string>
@@ -66,5 +71,32 @@
     </string-array>
 
     <string name="i_want_to">I want to</string>
+    <string name="i_want">I want</string>
     <string name="sign_up">Sign up</string>
+
+    <string name="weekly_goal">Weekly goal</string>
+
+
+    <string-array name="array_weekly_goals">
+        <item>loose weight</item>
+        <item>gain weight</item>
+    </string-array>
+
+    <string-array name="array_weekly_goals_kg">
+        <item>0.5</item>
+        <item>1</item>
+        <item>1.5</item>
+    </string-array>
+
+
+    <string name="kg_each_week">kg each week</string>
+    <string name="pounds_each_week">pounds each week</string>
+
+    <string name="lets_go">Lets go!</string>
+
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="goal">Goal</string>
+    <string name="categories">Categories</string>
+    <string name="food">Food</string>
 </resources>
