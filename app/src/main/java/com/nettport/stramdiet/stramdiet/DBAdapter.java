@@ -11,11 +11,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-
 public class DBAdapter {
     /* 01 Variables ---------------------------------------- */
     private static final String databaseName = "stramdiet";
-    private static final int databaseVersion = 20;
+    private static final int databaseVersion = 53;
 
     /* 02 Database variables ------------------------------- */
     private final Context context;
@@ -38,6 +37,36 @@ public class DBAdapter {
         @Override
         public void onCreate(SQLiteDatabase db){
             try{
+                // Create table goal
+                db.execSQL("CREATE TABLE IF NOT EXISTS goal (" +
+                        " goal_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " goal_current_weight INT, "+
+                        " goal_target_weight INT, "+
+                        " goal_i_want_to VARCHAR, "+
+                        " goal_weekly_goal VARCHAR, "+
+                        " goal_date DATE, "+
+                        " goal_energy_bmr INT, "+
+                        " goal_proteins_bmr INT, "+
+                        " goal_carbs_bmr INT, "+
+                        " goal_fat_bmr INT, "+
+                        " goal_energy_diet INT, "+
+                        " goal_proteins_diet INT, "+
+                        " goal_carbs_diet INT, "+
+                        " goal_fat_diet INT, "+
+                        " goal_energy_with_activity INT, "+
+                        " goal_proteins_with_activity INT, "+
+                        " goal_carbs_with_activity INT, "+
+                        " goal_fat_with_activity INT, "+
+                        " goal_energy_with_activity_and_diet INT, "+
+                        " goal_proteins_with_activity_and_diet INT, "+
+                        " goal_carbs_with_activity_and_diet INT, "+
+                        " goal_fat_with_activity_and_diet INT, "+
+                        " goal_notes VARCHAR);");
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+            try{
                 // Create tables
                 db.execSQL("CREATE TABLE IF NOT EXISTS users (" +
                         " user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -50,9 +79,7 @@ public class DBAdapter {
                         " user_location VARHCAR, " +
                         " user_height INT, " +
                         " user_activity_level INT, " +
-                        " user_weight INT, " +
-                        " user_target_weight INT, " +
-                        " user_target_weight_level INT," +
+                        " user_mesurment VARHCAR, " +
                         " user_last_seen TIME," +
                         " user_note VARCHAR);");
 
@@ -145,6 +172,7 @@ public class DBAdapter {
 
             // ! All tables that are going to be dropped need to be listed here
 
+            db.execSQL("DROP TABLE IF EXISTS goal");
             db.execSQL("DROP TABLE IF EXISTS users");
             db.execSQL("DROP TABLE IF EXISTS food_diary_cal_eaten");
             db.execSQL("DROP TABLE IF EXISTS food_diary");
@@ -171,12 +199,53 @@ public class DBAdapter {
         DBHelper.close();
     }
 
-    /* 07 Insert data ------------------------------------------------------------ */
-    public void insert(String table, String fields, String values){
-        db.execSQL("INSERT INTO " + table +  "(" + fields + ") VALUES (" + values + ")");
+    /* 07 Quote smart ------------------------------------------------------------ */
+    public String quoteSmart(String value){
+        // Is numeric?
+        boolean isNumeric = false;
+        try {
+            double myDouble = Double.parseDouble(value);
+            isNumeric = true;
+        }
+        catch(NumberFormatException nfe) {
+            System.out.println("Could not parse " + nfe);
+        }
+        if(isNumeric == false){
+            // Escapes special characters in a string for use in an SQL statement
+            if (value != null && value.length() > 0) {
+                value = value.replace("\\", "\\\\");
+                value = value.replace("'", "\\'");
+                value = value.replace("\0", "\\0");
+                value = value.replace("\n", "\\n");
+                value = value.replace("\r", "\\r");
+                value = value.replace("\"", "\\\"");
+                value = value.replace("\\x1a", "\\Z");
+            }
+        }
+
+        value = "'" + value + "'";
+
+        return value;
+    }
+    public double quoteSmart(double value) {
+        return value;
+    }
+    public int quoteSmart(int value) {
+        return value;
     }
 
-    /* 08 Count ------------------------------------------------------------------ */
+    /* 08 Insert data ------------------------------------------------------------ */
+    public void insert(String table, String fields, String values){
+
+        try {
+            db.execSQL("INSERT INTO " + table +  "(" + fields + ") VALUES (" + values + ")");
+        }
+        catch(SQLiteException e){
+            System.out.println("Insert error: " + e.toString());
+        }
+    }
+
+    /* 09 Count ------------------------------------------------------------------ */
     public int count(String table)
     {
         try {
@@ -191,5 +260,53 @@ public class DBAdapter {
         }
 
     }
+
+    /* 10 Select ----------------------------------------------------------------- */
+    public Cursor selectPrimaryKey(String table, String primaryKey, long rowId, String[] fields) throws SQLException {
+        /* Select example:
+        long row = 3;
+        String fields[] = new String[] {
+                "food_id",
+                "food_name",
+                "food_manufactor_name"
+        };
+        Cursor c = db.select("food", "food_id", row, fields);
+        displayRecordFromNotes(c);
+         */
+
+        Cursor mCursor = db.query(table, fields, primaryKey + "=" + rowId, null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    /* 11 Update ----------------------------------------------------------------- */
+    public boolean update(String table, String primaryKey, long rowId, String field, String value) {
+        /* Update example:
+        long id = 1;
+        String value = "xxt@doesthiswork.com";
+        String valueSQL = db.quoteSmart(value);
+        db.update("users", "user_id", id, "user_email", valueSQL);
+         */
+
+        // Remove first and last value of value
+        value = value.substring(1, value.length()-1); // removes ' after running quote smart
+
+        ContentValues args = new ContentValues();
+        args.put(field, value);
+        return db.update(table, args, primaryKey + "=" + rowId, null) > 0;
+    }
+    public boolean update(String table, String primaryKey, long rowId, String field, double value) {
+        ContentValues args = new ContentValues();
+        args.put(field, value);
+        return db.update(table, args, primaryKey + "=" + rowId, null) > 0;
+    }
+    public boolean update(String table, String primaryKey, long rowId, String field, int value) {
+        ContentValues args = new ContentValues();
+        args.put(field, value);
+        return db.update(table, args, primaryKey + "=" + rowId, null) > 0;
+    }
+
 
 }
