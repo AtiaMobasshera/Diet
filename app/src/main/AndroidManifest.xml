@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".SignUp"> 
         </activity>
+        <activity android:name=".EditProfileGoal"> </activity>
+<activity android:name=".SignUpGoal"> </activity>
     </application>
 
 </manifest>
