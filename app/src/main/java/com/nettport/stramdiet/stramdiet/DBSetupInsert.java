@@ -2,6 +2,8 @@ package com.nettport.stramdiet.stramdiet;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
+import android.widget.Toast;
+
 
 
 public class DBSetupInsert {
@@ -19,12 +21,17 @@ public class DBSetupInsert {
     /* Setup Insert To Categories ----------------------------------------- */
     // To insert to category table
     public void setupInsertToCategories(String values){
-        DBAdapter db = new DBAdapter(context);
-        db.open();
-        db.insert("categories",
-                "category_id, category_name, category_parent_id, category_icon, category_note",
-                values);
-        db.close();
+        try{
+            DBAdapter db = new DBAdapter(context);
+            db.open();
+            db.insert("categories",
+                    "category_id, category_name, category_parent_id, category_icon, category_note",
+                    values);
+            db.close();
+        }
+        catch (SQLiteException e){
+            // Toast.makeText(context, "Error; Could not insert categories.", Toast.LENGTH_SHORT).show();
+        }
     }
     public void insertAllCategories(){
         setupInsertToCategories("NULL, 'Bread', '0', '', NULL");
@@ -94,9 +101,11 @@ public class DBSetupInsert {
 
 
 
+
     /* Setup Insert To Food ----------------------------------------------- */
     // To insert food to food table
     public void setupInsertToFood(String values){
+
         try {
             DBAdapter db = new DBAdapter(context);
             db.open();
@@ -109,11 +118,8 @@ public class DBSetupInsert {
             // Toast.makeText(context, "Error; Could not insert food.", Toast.LENGTH_SHORT).show();
         }
 
-
     }
-
-
-    /* Insert all food into food database ---------------------------------- */
+    // Insert all food into food database
     public void insertAllFood(){
         setupInsertToFood("NULL, 'Speltlompe med havre', 'Aulie', '26', 'gram', '1', 'stk', '122', '3.5', '23.4', '1', '32', '1', '6', '0', NULL, NULL, '2', 'aulie_speltlomper_med_havre_thumb.jpg', 'aulie_speltlomper_med_havre_a.jpg', 'aulie_speltlomper_med_havre_b.jpg', 'aulie_speltlomper_med_havre_c.jpg', NULL");
         setupInsertToFood("NULL, 'Havregryn lettkokt', 'Axa', '60', 'gram', '60', 'g', '389', '11.4', '63.1', '7.8', '233', '7', '38', '5', NULL, NULL, '3', 'axa_havregryn_lettkokt_thumb.jpg', 'axa_havregryn_lettkokt_a.jpg', 'axa_havregryn_lettkokt_b.jpg', 'axa_havregryn_lettkokt_c.jpg', NULL");
