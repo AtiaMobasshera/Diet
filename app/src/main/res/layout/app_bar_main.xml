@@ -24,7 +24,15 @@
     <!-- //Toolbar -->
 
     <!-- Main content -->
-    <include layout="@layout/content_main" />
+        <!-- include layout="@layout/content_main" -->
+
+        <FrameLayout
+            android:id="@+id/flContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize" />
+
+
     <!-- //Main content -->
 
     <!-- E-mail button
