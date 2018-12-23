@@ -1,10 +1,12 @@
-package com.nettport.stramdiet.stramdiet;
+package com.nettport.dietbystram.dietbystram;
+
+/**
+ * Created by bruker on 19.06.2017.
+ */
 
 import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.widget.Toast;
-
-
 
 public class DBSetupInsert {
 
@@ -25,7 +27,7 @@ public class DBSetupInsert {
             DBAdapter db = new DBAdapter(context);
             db.open();
             db.insert("categories",
-                    "category_id, category_name, category_parent_id, category_icon, category_note",
+                    "_id, category_name, category_parent_id, category_icon, category_note",
                     values);
             db.close();
         }
@@ -40,63 +42,63 @@ public class DBSetupInsert {
         setupInsertToCategories("NULL, 'Frozen bread and rolls', '1', '', NULL");
         setupInsertToCategories("NULL, 'Crispbread', '1', '', NULL");
 
-
+        // Parent id: 6
         setupInsertToCategories("NULL, 'Dessert and baking', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Baking', '2', '', NULL");
-        setupInsertToCategories("NULL, 'Biscuit', '2', '', NULL");
+        setupInsertToCategories("NULL, 'Baking', '6', '', NULL");
+        setupInsertToCategories("NULL, 'Biscuit', '6', '', NULL");
 
 
         setupInsertToCategories("NULL, 'Drinks', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Soda', '3', '', NULL");
+        setupInsertToCategories("NULL, 'Soda', '9', '', NULL");
 
 
         setupInsertToCategories("NULL, 'Fruit and vegetables', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Frozen fruits and vegetables', '4', '', NULL");
-        setupInsertToCategories("NULL, 'Fruit', '4', '', NULL");
-        setupInsertToCategories("NULL, 'Vegetables', '4', '', NULL");
-        setupInsertToCategories("NULL, 'Canned fruits and vegetables', '4', '', NULL");
+        setupInsertToCategories("NULL, 'Frozen fruits and vegetables', '11', '', NULL");
+        setupInsertToCategories("NULL, 'Fruit', '11', '', NULL");
+        setupInsertToCategories("NULL, 'Vegetables', '11', '', NULL");
+        setupInsertToCategories("NULL, 'Canned fruits and vegetables', '11', '', NULL");
 
 
         setupInsertToCategories("NULL, 'Health', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Meal substitutes', '5', '', NULL");
-        setupInsertToCategories("NULL, 'Protein bars', '5', '', NULL");
-        setupInsertToCategories("NULL, 'Protein powder', '5', '', NULL");
+        setupInsertToCategories("NULL, 'Meal substitutes', '16', '', NULL");
+        setupInsertToCategories("NULL, 'Protein bars', '16', '', NULL");
+        setupInsertToCategories("NULL, 'Protein powder', '16', '', NULL");
 
 
         setupInsertToCategories("NULL, 'Meat, chicken and fish', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Meat', '6', '', NULL");
-        setupInsertToCategories("NULL, 'Chicken', '6', '', NULL");
-        setupInsertToCategories("NULL, 'Seafood', '6', '', NULL");
+        setupInsertToCategories("NULL, 'Meat', '20', '', NULL");
+        setupInsertToCategories("NULL, 'Chicken', '20', '', NULL");
+        setupInsertToCategories("NULL, 'Seafood', '20', '', NULL");
 
 
         setupInsertToCategories("NULL, 'Dairy and eggs', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Eggs', '7', '', NULL");
-        setupInsertToCategories("NULL, 'Cream and sour cream', '7', '', NULL");
-        setupInsertToCategories("NULL, 'Yogurt', '7', '', NULL");
+        setupInsertToCategories("NULL, 'Eggs', '24', '', NULL");
+        setupInsertToCategories("NULL, 'Cream and sour cream', '24', '', NULL");
+        setupInsertToCategories("NULL, 'Yogurt', '24', '', NULL");
 
 
         setupInsertToCategories("NULL, 'Dinner', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Ready dinner dishes', '8', '', NULL");
-        setupInsertToCategories("NULL, 'Pizza', '8', '', NULL");
-        setupInsertToCategories("NULL, 'Noodle', '8', '', NULL");
-        setupInsertToCategories("NULL, 'Pasta', '8', '', NULL");
-        setupInsertToCategories("NULL, 'Rice', '8', '', NULL");
-        setupInsertToCategories("NULL, 'Taco', '8', '', NULL");
+        setupInsertToCategories("NULL, 'Ready dinner dishes', '28', '', NULL");
+        setupInsertToCategories("NULL, 'Pizza', '28', '', NULL");
+        setupInsertToCategories("NULL, 'Noodle', '28', '', NULL");
+        setupInsertToCategories("NULL, 'Pasta', '28', '', NULL");
+        setupInsertToCategories("NULL, 'Rice', '28', '', NULL");
+        setupInsertToCategories("NULL, 'Taco', '28', '', NULL");
 
 
         setupInsertToCategories("NULL, 'Cheese', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Cream cheese', '9', '', NULL");
+        setupInsertToCategories("NULL, 'Cream cheese', '35', '', NULL");
 
 
         setupInsertToCategories("NULL, 'On bread', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Cold meats', '10', '', NULL");
-        setupInsertToCategories("NULL, 'Sweet spreads', '10', '', NULL");
-        setupInsertToCategories("NULL, 'Jam', '10', '', NULL");
+        setupInsertToCategories("NULL, 'Cold meats', '37', '', NULL");
+        setupInsertToCategories("NULL, 'Sweet spreads', '37', '', NULL");
+        setupInsertToCategories("NULL, 'Jam', '37', '', NULL");
 
 
         setupInsertToCategories("NULL, 'Snacks', '0', '', NULL");
-        setupInsertToCategories("NULL, 'Nuts', '11', '', NULL");
-        setupInsertToCategories("NULL, 'Potato chips', '11', '', NULL");
+        setupInsertToCategories("NULL, 'Nuts', '41', '', NULL");
+        setupInsertToCategories("NULL, 'Potato chips', '41', '', NULL");
     }
 
 
@@ -110,7 +112,7 @@ public class DBSetupInsert {
             DBAdapter db = new DBAdapter(context);
             db.open();
             db.insert("food",
-                    "food_id, food_name, food_manufactor_name, food_serving_size, food_serving_mesurment, food_serving_name_number, food_serving_name_word, food_energy, food_proteins, food_carbohydrates, food_fat, food_energy_calculated, food_proteins_calculated, food_carbohydrates_calculated, food_fat_calculated, food_user_id, food_barcode, food_category_id, food_thumb, food_image_a, food_image_b, food_image_c, food_notes",
+                    "_id, food_name, food_manufactor_name, food_serving_size, food_serving_mesurment, food_serving_name_number, food_serving_name_word, food_energy, food_proteins, food_carbohydrates, food_fat, food_energy_calculated, food_proteins_calculated, food_carbohydrates_calculated, food_fat_calculated, food_user_id, food_barcode, food_category_id, food_thumb, food_image_a, food_image_b, food_image_c, food_notes",
                     values);
             db.close();
         }
@@ -214,7 +216,6 @@ public class DBSetupInsert {
         setupInsertToFood("NULL, 'Micropop', 'Eldorado', '100', 'gram', '1', 'stk', '389', '7', '35', '19.1', '389', '7', '35', '19', NULL, NULL, '43', 'eldorado_micropop_thumb.jpg', 'eldorado_micropop_a.jpg', 'eldorado_micropop_b.jpg', 'eldorado_micropop_c.jpg', NULL");
         setupInsertToFood("NULL, 'Sørlandschips Spansk paprika med persille', 'Snacks', '200', 'gram', '1', 'pakke', '504', '7', '58', '26', '1 008', '14', '116', '52', NULL, NULL, '43', 'soorlandschips_spansk_paprika_med_persille_thumb.jpg', 'soorlandschips_spansk_paprika_med_persille_a.jpg', 'soorlandschips_spansk_paprika_med_persille_b.jpg', 'soorlandschips_spansk_paprika_med_persille_c.jpg', NULL");
     }
-
 
 
 }
