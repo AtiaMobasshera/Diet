@@ -1,4 +1,8 @@
-package com.nettport.stramdiet.stramdiet;
+package com.nettport.dietbystram.dietbystram;
+
+/**
+ * Created by bruker on 19.06.2017.
+ */
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,11 +14,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 
 public class DBAdapter {
+
     /* 01 Variables ---------------------------------------- */
-    private static final String databaseName = "stramdiet";
-    private static final int databaseVersion = 53;
+    private static final String databaseName = "dietbystram";
+    private static final int databaseVersion = 7;
 
     /* 02 Database variables ------------------------------- */
     private final Context context;
@@ -39,7 +45,8 @@ public class DBAdapter {
             try{
                 // Create table goal
                 db.execSQL("CREATE TABLE IF NOT EXISTS goal (" +
-                        " goal_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " goal_id INT, "+
                         " goal_current_weight INT, "+
                         " goal_target_weight INT, "+
                         " goal_i_want_to VARCHAR, "+
@@ -69,7 +76,8 @@ public class DBAdapter {
             try{
                 // Create tables
                 db.execSQL("CREATE TABLE IF NOT EXISTS users (" +
-                        " user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " user_id INTEGER, " +
                         " user_email VARCHAR," +
                         " user_password VARCHAR, " +
                         " user_salt VARCHAR, " +
@@ -90,7 +98,8 @@ public class DBAdapter {
 
             try{
                 db.execSQL("CREATE TABLE IF NOT EXISTS food_diary_cal_eaten (" +
-                        " cal_eaten_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " cal_eaten_id INTEGER, " +
                         " cal_eaten_date DATE, " +
                         " cal_eaten_meal_no INT, " +
                         " cal_eaten_energy INT, " +
@@ -104,7 +113,8 @@ public class DBAdapter {
 
             try{
                 db.execSQL("CREATE TABLE IF NOT EXISTS food_diary (" +
-                        " fd_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        " _id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        " fd_id INTEGER," +
                         " fd_date DATE," +
                         " fd_meal_number INT," +
                         " fd_food_id INT," +
@@ -122,7 +132,8 @@ public class DBAdapter {
             }
             try{
                 db.execSQL("CREATE TABLE IF NOT EXISTS categories (" +
-                        " category_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        " _id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        " category_id INTEGER," +
                         " category_name VARCHAR," +
                         " category_parent_id INT," +
                         " category_icon VARCHAR," +
@@ -134,9 +145,11 @@ public class DBAdapter {
             }
             try {
                 db.execSQL("CREATE TABLE IF NOT EXISTS food (" +
-                        " food_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " _id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        " food_id INTEGER, " +
                         " food_name VARCHAR," +
                         " food_manufactor_name VARCHAR," +
+                        " food_description VARCHAR," +
                         " food_serving_size DOUBLE," +
                         " food_serving_mesurment VARCHAR," +
                         " food_serving_name_number DOUBLE," +
@@ -262,25 +275,63 @@ public class DBAdapter {
     }
 
     /* 10 Select ----------------------------------------------------------------- */
-    public Cursor selectPrimaryKey(String table, String primaryKey, long rowId, String[] fields) throws SQLException {
-        /* Select example:
-        long row = 3;
-        String fields[] = new String[] {
-                "food_id",
-                "food_name",
-                "food_manufactor_name"
-        };
-        Cursor c = db.select("food", "food_id", row, fields);
-        displayRecordFromNotes(c);
-         */
-
-        Cursor mCursor = db.query(table, fields, primaryKey + "=" + rowId, null, null, null, null, null);
+    // Select
+    public Cursor select(String table, String[] fields) throws SQLException
+    {
+                /* Select example:
+                                Cursor allCategories;
+                String fields[] = new String[] {
+                                "category_id",
+                                "category_name",
+                                "category_parent_id"
+                };
+                allCategories = db.selectAllWhere("categories", fields);
+                */
+        Cursor mCursor = db.query(table, fields, null, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
         return mCursor;
     }
 
+    // Select All where (String)
+    public Cursor select(String table, String[] fields, String whereClause, String whereCondition) throws SQLException
+    {
+                /* Select example:
+                                Cursor allCategories;
+                String fields[] = new String[] {
+                                "category_id",
+                                "category_name",
+                                "category_parent_id"
+                };
+                allCategories = db.select("categories", fields, "category_parent_id", "0");
+                */
+        Cursor mCursor = db.query(table, fields, whereClause + "=" + whereCondition, null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    // Select All where (Long)
+    public Cursor select(String table, String[] fields, String whereClause, long whereCondition) throws SQLException {
+                /* Select example:
+                long row = 3;
+                String fields[] = new String[] {
+                                "food_id",
+                                "food_name",
+                                "food_manufactor_name"
+                };
+                allCategories = db.selectAllWhere("categories", fields, "category_parent_id", row);
+                displayRecordFromNotes(c);
+                */
+
+        Cursor mCursor = db.query(table, fields, whereClause + "=" + whereCondition, null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
     /* 11 Update ----------------------------------------------------------------- */
     public boolean update(String table, String primaryKey, long rowId, String field, String value) {
         /* Update example:
@@ -307,6 +358,5 @@ public class DBAdapter {
         args.put(field, value);
         return db.update(table, args, primaryKey + "=" + rowId, null) > 0;
     }
-
 
 }
